@@ -1,14 +1,3 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
 
@@ -24,3 +13,123 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {
+  font-family: 'Cera';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./assets/fonts/CeraRoundProRegular.otf');
+}
+
+@font-face {
+  font-family: 'Cera';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./assets/fonts/CeraRoundProBold.otf');
+}
+
+@font-face {
+  font-family: 'Cera';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./assets/fonts/CeraRoundProThin.otf');
+}
+
+@font-face {
+  font-family: 'Cera';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./assets/fonts/CeraRoundProMedium.otf');
+}
+
+@font-face {
+  font-family: 'Cera';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./assets/fonts/CeraRoundProLight.otf');
+}
+
+@font-face {
+  font-family: 'Cera';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./assets/fonts/CeraRoundProBlack.otf');
+}
+
+* {
+  font-family: Cera !important;
+}
+
+.logo {
+  font-size: 80px;
+  color: var(--ion-color-primary);
+}
+
+.rounded-input {
+  height: 55px;
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 15px;
+  --highlight-color-focused: none;
+
+  ion-label {
+    margin-top: -8px;
+  }
+
+}
+
+.rounded-input.item-has-focus {
+  border: 2px solid var(--ion-color-primary);
+  
+  ion-label {
+    color: var(--ion-color-primary);
+    margin-top: 4px;
+  }
+  
+  ion-input {
+    margin-top: -11px;
+  }
+}
+
+.rounded-input.item-has-value {
+  ion-label {
+    color: var(--ion-color-primary);
+    margin-top: 4px;
+  }
+
+  ion-input {
+    margin-top: -11px;
+  }
+}
+
+ion-input {
+  --padding-top: 0 !important;
+  --padding-bottom: 0 !important;
+}
+
+ion-button {
+  text-transform: none;
+}
+
+.card {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  margin: calc(20vh - 60px) auto 0;
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .4);
+  opacity: 0.95;
+
+  ion-item {
+    margin-bottom: 20px;
+  }
+  
+  &--footer {
+    cursor: pointer;
+    font-size: 14px;
+    
+    span {
+      color: var(--ion-color-primary);
+    }
+  }
+}

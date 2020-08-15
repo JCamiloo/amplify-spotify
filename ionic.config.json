@@ -1,5 +1,7 @@
 {
   "name": "music",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

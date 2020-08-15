@@ -1,0 +1,21 @@
+<ion-content>
+  <ion-slides class="mainSlide" #mainSlide>
+    <ion-slide>
+      <app-rounded-header>
+        header="rounded"
+      </app-rounded-header>
+      <app-login-form 
+        (swipe)="onSwipe($event)">
+      </app-login-form>
+    </ion-slide>
+
+    <ion-slide>
+      <app-rounded-header>
+        header="polygon"
+      </app-rounded-header>
+      <app-register-form
+        (swipe)="onSwipe($event)">
+      </app-register-form>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 type Headers = 'rounded' |'polygon'; 
 
 @Component({
-  selector: 'app-rounded-header',
+  selector: 'app-header',
   template: `<div [ngClass]="headerClass"></div>`,
   styles: [`
     .rounded-header {
@@ -15,7 +15,7 @@ type Headers = 'rounded' |'polygon';
       top:0;
       right: 0;
       z-index: -1;
-    },
+    }
 
     .polygon-header {
       width: 100%;
@@ -29,14 +29,17 @@ type Headers = 'rounded' |'polygon';
     }
   `],
 })
-export class RoundedHeaderComponent {
+export class HeaderComponent implements OnInit {
   
   @Input() header: Headers;
-  headerClass = {
-    'rounded-header': this.header === 'rounded',
-    'polygon-header': this.header === 'polygon'
-  }
+  headerClass;
 
   constructor() { }
 
+  ngOnInit() {
+    this.headerClass = {
+      'rounded-header': this.header === 'rounded',
+      'polygon-header': this.header === 'polygon',
+    }
+  }
 }

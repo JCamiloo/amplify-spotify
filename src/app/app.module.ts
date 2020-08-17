@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy, Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AmplifyAngularModule, AmplifyIonicModule, AmplifyService } from 'aws-amplify-angular';
 
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -24,12 +25,15 @@ const routes: Routes = [
   entryComponents: [],
   imports: [
     BrowserModule,
+    AmplifyAngularModule,
+    AmplifyIonicModule,
     IonicModule.forRoot(),
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    AmplifyService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

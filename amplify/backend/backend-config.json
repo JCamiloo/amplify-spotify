@@ -1,0 +1,10 @@
+{
+	"auth": {
+		"music95689f82": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}

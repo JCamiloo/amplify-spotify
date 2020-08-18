@@ -1,35 +1,87 @@
 <div class="card">
   <ion-icon class="logo" name="musical-note"></ion-icon>
 
-  <ion-list lines="none">
-    <ion-item class="rounded-input">
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text">
-      </ion-input>
-    </ion-item>
+  <form [formGroup]="signUpForm" (ngSubmit)="submit()">
+    <ion-list lines="none">
+      <ion-item class="rounded-input">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input 
+          type="text"
+          formControlName="name">
+        </ion-input>
+      </ion-item>
+      <p 
+        class="error" 
+        *ngIf="nameField.errors?.required &&
+              (nameField.touched || nameField.dirty)">
+        Campo obligatorio
+      </p>
 
-    <ion-item class="rounded-input">
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input type="email">
-      </ion-input>
-    </ion-item>
+      <ion-item class="rounded-input mt-20">
+        <ion-label position="floating">Correo</ion-label>
+        <ion-input 
+          type="email"
+          formControlName="email">
+        </ion-input>
+      </ion-item>
+      <p 
+        class="error"
+        *ngIf="emailField.errors?.required &&
+              (emailField.touched || emailField.dirty)">
+        Campo obligatorio
+      </p>
+      <p 
+        class="error"
+        *ngIf="emailField.errors?.email &&
+              (emailField.touched || emailField.dirty)">
+        Correo inválido
+      </p>
 
-    <ion-item class="rounded-input">
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password">
-      </ion-input>
-    </ion-item>
+      <ion-item class="rounded-input mt-20">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input 
+          type="password"
+          formControlName="password">
+        </ion-input>
+      </ion-item>
+      <p 
+        class="error"
+        *ngIf="passwordField.errors?.required &&
+              (passwordField.touched || passwordField.dirty)">
+        Campo obligatorio
+      </p>
+      <p 
+        class="error"
+        *ngIf="passwordField.errors?.minlength &&
+              (passwordField.touched || passwordField.dirty)">
+        Mínimo 8 caracteres
+      </p>
 
-    <ion-item class="rounded-input">
-      <ion-label position="floating">Repetir contraseña</ion-label>
-      <ion-input type="password">
-      </ion-input>
-    </ion-item>
-  </ion-list>
+      <ion-item class="rounded-input  mt-20">
+        <ion-label position="floating">Repetir contraseña</ion-label>
+        <ion-input 
+          type="password"
+          formControlName="passwordConfirm">
+        </ion-input>
+      </ion-item>
+      <p 
+        class="error"
+        *ngIf="passwordConfirmField.errors?.required &&
+              (passwordConfirmField.touched || passwordConfirmField.dirty)">
+        Campo obligatorio
+      </p>
+      <p 
+        class="error"
+        *ngIf="passwordConfirmField.errors?.match &&
+              (passwordConfirmField.touched || passwordConfirmField.dirty)">
+        Las contraseñas no coinciden
+      </p>
+    </ion-list>
 
-  <ion-button shape="round">
-    Registrar
-  </ion-button>
+    <ion-button shape="round" class="mt-10" type="submit">
+      Registrar
+    </ion-button>
+  </form>
 
   <p class="card--footer" (click)="swipeToLogin()">
     ¿Ya estás registrado? <span> Ingresa </span>

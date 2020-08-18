@@ -1,23 +1,51 @@
 <div class="card">
   <ion-icon class="logo" name="musical-notes"></ion-icon>
-  <ion-list lines="none">
-    <ion-item class="rounded-input">
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input type="email">
-      </ion-input>
-    </ion-item>
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <ion-list lines="none">
+      <ion-item class="rounded-input">
+        <ion-label position="floating">Correo</ion-label>
+        <ion-input 
+          formControlName="email" 
+          type="email">
+        </ion-input>
+      </ion-item>
+      <p 
+        *ngIf="emailField.errors?.required &&
+              (emailField.dirty || emailField.touched)" 
+        class="error">
+        Campo obligatorio
+      </p>
+      <p 
+        *ngIf="emailField.errors?.email &&
+              (emailField.dirty || emailField.touched)"
+        class="error">
+        Correo inválido
+      </p>
 
-    <ion-item class="rounded-input">
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password">
-      </ion-input>
-    </ion-item>
-  </ion-list>
+      <ion-item class="rounded-input mt-20">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input 
+          formControlName="password" 
+          type="password">
+        </ion-input>
+      </ion-item>
+      <p 
+        *ngIf="passwordField.errors?.required &&
+              (passwordField.dirty || passwordField.touched)" 
+        class="error">
+        Campo obligatorio
+      </p>
+      <p 
+        *ngIf="passwordField.errors?.minlength &&
+              (passwordField.dirty || passwordField.touched)" 
+        class="error">Mínimo 8 caracteres
+      </p>
+    </ion-list>
 
-  <ion-button shape="round">
-    Ingresar
-  </ion-button>
-  
+    <ion-button class="mt-10" shape="round" type="submit">
+      Ingresar
+    </ion-button>
+  </form>
   <p class="card--footer" (click)="swipeToRegister()"> 
     ¿No tienes una cuenta? <span> Regístrate </span> 
   </p>

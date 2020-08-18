@@ -5,9 +5,9 @@
         header="rounded">
       </app-header>
 
-      <ion-button (click)="signin()">signin</ion-button>
-      <app-login-form 
-        (swipe)="onSwipe($event)">
+      <app-login-form
+        (onLogin)="onLogin($event)"
+        (onSwipe)="onSwipe($event)">
       </app-login-form>
     </ion-slide>
 
@@ -17,7 +17,8 @@
       </app-header>
 
       <app-register-form
-        (swipe)="onSwipe($event)">
+        (onSignUp)="onSignUp($event)"
+        (onSwipe)="onSwipe($event)">
       </app-register-form>
     </ion-slide>
   </ion-slides>

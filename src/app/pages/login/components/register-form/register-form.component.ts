@@ -1,18 +1,81 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.scss'],
 })
-export class RegisterFormComponent {
+export class RegisterFormComponent implements OnInit, OnDestroy {
 
-  @Output() swipe = new EventEmitter<number>()
+  signUpForm: FormGroup;
+  @Output() onSignUp = new EventEmitter<FormGroup>();
+  @Output() onSwipe = new EventEmitter<number>();
+  formSubscriptions: Subscription[] = [];
 
-  constructor() { }
-
-  swipeToLogin() {
-    this.swipe.emit(0);
+  constructor(private formBuilder: FormBuilder) {
+    this.signUpForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      passwordConfirm: ['', [Validators.required]],
+    })  
   }
 
+  ngOnInit() {
+    this.initPasswordSubcriptions();
+  }
+
+  initPasswordSubcriptions() {
+    this.signUpForm.controls['password'].valueChanges.subscribe((value: string) => {
+      if (value.trim() !== this.passwordConfirmField.value) {
+        this.passwordConfirmField.setErrors({ match: true });
+      } else {
+        this.passwordConfirmField.setErrors(null);
+      }
+    });
+
+    this.signUpForm.controls['passwordConfirm'].valueChanges.subscribe((value: string) => {
+      if (value.trim() !== this.passwordField.value) {
+        this.passwordConfirmField.setErrors({ match: true });
+      } else {
+        this.passwordConfirmField.setErrors(null);
+      }
+    });
+  }
+
+  submit() {
+    if (this.signUpForm.invalid) {
+      const formKeys = Object.keys(this.signUpForm.controls);
+      formKeys.forEach((formKey) => this.signUpForm.controls[formKey].markAsTouched());
+    } else {
+      this.onSignUp.emit(this.signUpForm);
+    }
+    console.log(this.signUpForm.controls);
+  }
+
+  swipeToLogin() {
+    this.onSwipe.emit(0);
+  }
+
+  get nameField() {
+    return this.signUpForm.controls['name'];
+  }
+
+  get emailField() {
+    return this.signUpForm.controls['email'];
+  }
+
+  get passwordField() {
+    return this.signUpForm.controls['password'];
+  }
+
+  get passwordConfirmField() {
+    return this.signUpForm.controls['passwordConfirm'];
+  }
+
+  ngOnDestroy() {
+    this.formSubscriptions.forEach(formSubscription => formSubscription.unsubscribe());
+  }
 }

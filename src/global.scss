@@ -74,11 +74,17 @@
   ion-label {
     margin-top: -8px;
   }
+}
 
+.rounded-input.ion-invalid,
+.rounded-input.ion-dirty,
+.rounded-input.ion-ion-touched {
+  --highlight-background: none;
 }
 
 .rounded-input.item-has-focus {
   border: 2px solid var(--ion-color-primary);
+  --highlight-color-focused: none;
   
   ion-label {
     color: var(--ion-color-primary);
@@ -91,6 +97,8 @@
 }
 
 .rounded-input.item-has-value {
+  --highlight-color-focused: none;
+
   ion-label {
     color: var(--ion-color-primary);
     margin-top: 4px;
@@ -119,10 +127,6 @@ ion-button {
   background-color: #fff;
   box-shadow: 0 10px 20px rgba(0, 0, 0, .4);
   opacity: 0.95;
-
-  ion-item {
-    margin-bottom: 20px;
-  }
   
   &--footer {
     cursor: pointer;
@@ -132,4 +136,24 @@ ion-button {
       color: var(--ion-color-primary);
     }
   }
+}
+
+ion-list {
+  padding: 20px !important;
+}
+
+.error {
+  position: absolute;
+  margin: 0;
+  color: #eb445a;
+  text-align: left;
+  font-size: 12px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }

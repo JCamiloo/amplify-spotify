@@ -1,0 +1,19 @@
+ion-content {
+  --background: url('~/assets/images/bg.png') 100% 100%;
+}
+
+.player {
+  background-color: white;
+}
+
+.song-timer {
+  display: flex;
+  padding: 3px 10px;
+  background-color: white;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    margin: 0;
+  }
+}

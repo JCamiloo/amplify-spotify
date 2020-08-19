@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -10,9 +10,10 @@ import { Subscription } from 'rxjs';
 export class RegisterFormComponent implements OnInit, OnDestroy {
 
   signUpForm: FormGroup;
+  formSubscriptions: Subscription[] = [];
+  @Input() isLoading: boolean;
   @Output() onSignUp = new EventEmitter<FormGroup>();
   @Output() onSwipe = new EventEmitter<number>();
-  formSubscriptions: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder) {
     this.signUpForm = this.formBuilder.group({
@@ -52,7 +53,6 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
     } else {
       this.onSignUp.emit(this.signUpForm);
     }
-    console.log(this.signUpForm.controls);
   }
 
   swipeToLogin() {

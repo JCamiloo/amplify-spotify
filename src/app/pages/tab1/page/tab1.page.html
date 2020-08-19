@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">
+      Pragmatify
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h1> Álbumes </h1>
+  <ion-grid>
+    <ion-row>
+      <ion-col 
+        sizeLg="3" sizeMd="4" sizeXs="6"
+        *ngFor="let album of albums"
+      >
+        <ion-card mode="md" (click)="showAlbumSongs(album)">
+          <img [src]="album.images[0].url">
+          <ion-card-content>
+            <ion-card-subtitle>
+              {{ album.artists[0].name }}
+            </ion-card-subtitle>
+            <ion-card-title>  
+              {{ album.name }}
+            </ion-card-title>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer color="primary">
+  <div class="song-timer" *ngIf="currentSong">
+    <p> {{ currentSong.currentTime | songDuration }} </p>
+    <p> {{ currentSong.duration | songDuration }} </p>
+  </div>
+
+  <ion-progress-bar color="primary" [value]="newTime"></ion-progress-bar>
+
+  <ion-grid class="player">
+    <ion-row>
+      <ion-col size="1">
+        <ion-icon color="primary" name="heart"></ion-icon>
+      </ion-col>
+
+      <ion-col size="10" class="ion-text-center">
+        {{ song.name || 'Selecciona una canción' }}
+      </ion-col>
+
+      <ion-col class="ion-text-end" size="1">
+        <ion-icon name="play" (click)="playSong()" 
+                  color="primary" *ngIf="!song.playing">
+        </ion-icon>
+
+        <ion-icon name="pause" (click)="pauseSong()" 
+                  color="primary" *ngIf="song.playing">
+        </ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

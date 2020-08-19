@@ -42,7 +42,8 @@
       </p>
     </ion-list>
 
-    <ion-button class="mt-10" shape="round" type="submit">
+    <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+    <ion-button *ngIf="!isLoading" class="mt-10" shape="round" type="submit">
       Ingresar
     </ion-button>
   </form>

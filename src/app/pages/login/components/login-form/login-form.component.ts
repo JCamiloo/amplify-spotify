@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class LoginFormComponent {
   
   loginForm: FormGroup;
+  @Input() isLoading: boolean;
   @Output() onLogin = new EventEmitter<FormGroup>();
   @Output() onSwipe = new EventEmitter<number>();
 
@@ -19,10 +20,6 @@ export class LoginFormComponent {
     });
   }
 
-  swipeToRegister() {
-    this.onSwipe.emit(1);
-  }
-
   submit() {
     if (this.loginForm.invalid) {
       const formKeys = Object.keys(this.loginForm.controls);
@@ -30,6 +27,10 @@ export class LoginFormComponent {
     } else {
       this.onLogin.emit(this.loginForm);
     }
+  }
+
+  swipeToRegister() {
+    this.onSwipe.emit(1);
   }
 
   get emailField() {

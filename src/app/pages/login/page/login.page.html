@@ -6,6 +6,7 @@
       </app-header>
 
       <app-login-form
+        [isLoading]="loginLoading"
         (onLogin)="onLogin($event)"
         (onSwipe)="onSwipe($event)">
       </app-login-form>
@@ -17,6 +18,7 @@
       </app-header>
 
       <app-register-form
+        [isLoading]="signUpLoading"
         (onSignUp)="onSignUp($event)"
         (onSwipe)="onSwipe($event)">
       </app-register-form>

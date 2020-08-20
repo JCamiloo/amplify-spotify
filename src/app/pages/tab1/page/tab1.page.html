@@ -7,27 +7,35 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h1 class="title"> Álbumes </h1>
-  <ion-grid>
-    <ion-row>
-      <ion-col 
-        sizeLg="3" sizeMd="4" sizeXs="6"
-        *ngFor="let album of albums"
-      >
-        <ion-card mode="md" (click)="showAlbumSongs(album)">
-          <img [src]="album.images[0].url">
-          <ion-card-content>
-            <ion-card-subtitle>
-              {{ album.artists[0].name }}
-            </ion-card-subtitle>
-            <ion-card-title>  
-              {{ album.name }}
-            </ion-card-title>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ng-container *ngIf="isLoading">
+    <div class="loading-screen">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading">
+    <h1 class="title"> Álbumes </h1>
+    <ion-grid>
+      <ion-row>
+        <ion-col 
+          sizeLg="3" sizeMd="4" sizeXs="6"
+          *ngFor="let album of albums"
+        >
+          <ion-card class="fadeIn fast" mode="md" (click)="showAlbumSongs(album)">
+            <img [src]="album.images[0].url">
+            <ion-card-content>
+              <ion-card-subtitle>
+                {{ album.artists[0].name }}
+              </ion-card-subtitle>
+              <ion-card-title>  
+                {{ album.name }}
+              </ion-card-title>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
 </ion-content>
 
 <ion-footer color="primary">

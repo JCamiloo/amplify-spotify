@@ -14,6 +14,7 @@ export class Tab1Page implements OnInit {
   albums = [];
   currentSong: HTMLAudioElement;
   newTime;
+  isLoading = false;
 
   song: {
     preview_url: string,
@@ -32,10 +33,12 @@ export class Tab1Page implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.isLoading = true;
     await this.spotifySrv.getToken();
     this.spotifySrv.getNewReleases().subscribe(releases => {
       this.songs = releases.filter(e => e.album_type === 'single');
       this.albums = releases.filter(e => e.album_type === 'album');
+      this.isLoading = false;
     });
   }
 

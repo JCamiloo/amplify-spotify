@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, NavController } from '@ionic/angular';
 import { FormGroup } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { MessengerService } from 'src/app/services/messenger.service';
 
 @Component({
   selector: 'app-login',
@@ -15,22 +16,30 @@ export class LoginPage implements OnInit {
   loginLoading = false;
 
   constructor(
-    private authSrv: AuthService, 
-    private navCtrl: NavController
+    private authSrv: AuthService,
+    private navCtrl: NavController,
+    private messengerSrv: MessengerService
   ) { }
 
   ngOnInit() {
   }
 
-  onLogin(loginForm: FormGroup) {
+  async onLogin(loginForm: FormGroup) {
     this.loginLoading = true;
-    console.log(loginForm);
-    this.navCtrl.navigateRoot('');
+    try {
+      await this.authSrv.signIn(loginForm);
+      this.loginLoading = false;
+      this.navCtrl.navigateRoot('');
+    } catch(e) {
+      this.loginLoading = false;
+      await this.messengerSrv.showMessage('Algo sucedió', e.code);
+    }
   }
 
-  onSignUp(signUpForm: FormGroup) {
+  async onSignUp(signUpForm: FormGroup) {
     this.signUpLoading = true;
-    console.log(signUpForm);
+    const alert = await this.messengerSrv.showMessage('titulo', 'mensaje');
+    // this.authSrv.signUp(signUpForm);
   }
 
   onSwipe(index: number) {

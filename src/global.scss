@@ -165,3 +165,30 @@ ion-card {
 .mt-10 {
   margin-top: 10px;
 }
+
+.messenger {
+  .alert-wrapper {
+    border-radius: 15px;
+
+    .alert-head {
+      background-color: var(--ion-color-primary);
+
+      h2 {
+        color: white;
+      }
+    }
+
+    .alert-message {
+      padding-top: 10px !important;
+    }
+
+    .alert-button-group {
+      justify-content: center;
+
+      button {
+        margin: 0;
+        text-transform: none;
+      }
+    }
+  }
+}

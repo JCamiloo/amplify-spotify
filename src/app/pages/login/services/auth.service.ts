@@ -1,22 +1,29 @@
-import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
+import { FormGroup } from '@angular/forms';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AuthService {
 
   constructor() { }
 
-  signin() {
-    Auth.signIn('jcamilo.osorio15@gmail.com', '12345678').then(console.log);
+  signIn(loginForm: FormGroup) {
+    const data = loginForm.getRawValue();
+    return new Promise((resolve, reject) => {
+      Auth.signIn(data.email, data.password)
+        .then(resolve)
+        .catch(e => reject(e));
+    });
   }
 
-  signup() {
-    Auth.signUp('jcamilo.osorio15@gmail.com', '12345678').then(console.log);
-    // Auth.confirmSignUp('jcamilo.osorio15@gmail.com', '254856').then(console.log);
-    // Auth.signOut().then(console.log);
-    
-    // setTimeout(() => Auth.currentSession().then(console.log), 8000);
+  signUp(signUpForm: FormGroup) {
+    const data = signUpForm.getRawValue();
+    return new Promise((resolve, reject) => {
+      Auth.signUp(data.email, data.password)
+      .then((data) => {
+        if (!data.userConfirmed) {
+          resolve();
+        }
+      })
+      .catch(e => reject(e));
+    });
   }
 }

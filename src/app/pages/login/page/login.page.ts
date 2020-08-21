@@ -31,15 +31,16 @@ export class LoginPage implements OnInit {
       this.loginLoading = false;
       this.navCtrl.navigateRoot('');
     } catch(e) {
+      console.log('error', e)
       this.loginLoading = false;
       await this.messengerSrv.showMessage('Algo sucedió', e.code);
     }
   }
 
   async onSignUp(signUpForm: FormGroup) {
-    this.signUpLoading = true;
-    const alert = await this.messengerSrv.showMessage('titulo', 'mensaje');
-    // this.authSrv.signUp(signUpForm);
+    // this.signUpLoading = true;
+    this.authSrv.signUp(signUpForm);
+    // const alert = await this.messengerSrv.showMessage('titulo', 'mensaje');
   }
 
   onSwipe(index: number) {

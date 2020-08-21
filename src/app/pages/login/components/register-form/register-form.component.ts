@@ -17,11 +17,10 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder) {
     this.signUpForm = this.formBuilder.group({
-      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       passwordConfirm: ['', [Validators.required]],
-    })  
+    });
   }
 
   ngOnInit() {
@@ -57,10 +56,6 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
 
   swipeToLogin() {
     this.onSwipe.emit(0);
-  }
-
-  get nameField() {
-    return this.signUpForm.controls['name'];
   }
 
   get emailField() {

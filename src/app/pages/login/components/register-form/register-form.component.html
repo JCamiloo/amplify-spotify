@@ -3,20 +3,6 @@
 
   <form [formGroup]="signUpForm" (ngSubmit)="submit()">
     <ion-list lines="none">
-      <ion-item class="rounded-input">
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input 
-          type="text"
-          formControlName="name">
-        </ion-input>
-      </ion-item>
-      <p 
-        class="error" 
-        *ngIf="nameField.errors?.required &&
-              (nameField.touched || nameField.dirty)">
-        Campo obligatorio
-      </p>
-
       <ion-item class="rounded-input mt-20">
         <ion-label position="floating">Correo</ion-label>
         <ion-input 

@@ -156,6 +156,12 @@ ion-spinner {
 
 ion-card {
   border-radius: 15px;
+
+  ion-card-content {
+    ion-card-title {
+      font-size: 18px;
+    }
+  }
 }
 
 .mt-20 {
@@ -231,4 +237,20 @@ ion-card {
   flex-direction: column;
   align-items: center;
   justify-content: center
+}
+
+.player {
+  background-color: white;
+}
+
+.song-timer {
+  display: flex;
+  padding: 3px 10px;
+  background-color: white;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    margin: 0;
+  }
 }

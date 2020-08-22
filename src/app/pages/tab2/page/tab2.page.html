@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title class="ion-text-center">
-      Pragmatify
+      Favoritos
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,32 +14,30 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <h1 class="title"> Álbumes </h1>
-    <ion-grid>
-      <ion-row>
-        <ion-col 
-          sizeLg="3" sizeMd="4" sizeXs="6"
-          *ngFor="let album of albums"
+    <div class="favorites-list">
+      <ion-list>
+        <ion-item-sliding
+          class="fadeIn fast"
+          *ngFor="let song of favoriteSongs; let i = index"
         >
-          <ion-card class="fadeIn fast" mode="md" (click)="showAlbumSongs(album)">
-            <img [src]="album.images[0].url">
-            <ion-card-content>
-              <ion-card-subtitle>
-                {{ album.artists[0].name }}
-              </ion-card-subtitle>
-              <ion-card-title>  
-                {{ album.name }}
-              </ion-card-title>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+          <ion-item (click)="setSong(song)">
+            <ion-icon color="primary" slot="start" name="musical-notes"></ion-icon>
+            {{ song.name }} - {{ song.artists[0].name }}
+          </ion-item>
+    
+          <ion-item-options side="end">
+            <ion-item-option color="danger">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
   </ng-container>
 </ion-content>
 
 <ion-footer color="primary">
-  <div  class="song-timer" *ngIf="currentSong">
+  <div class="song-timer" *ngIf="currentSong">
     <p> {{ currentSong.currentTime | songDuration }} </p>
     <p> {{ currentSong.duration | songDuration }} </p>
   </div>
@@ -49,20 +47,6 @@
   <ion-grid class="player">
     <ion-row>
       <ion-col size="1">
-        <ion-icon 
-          *ngIf="song.favorite"
-          (click)="removeFavorite(song.id)"
-          color="primary" 
-          name="heart"
-        >
-        </ion-icon>
-        <ion-icon 
-          *ngIf="!song.favorite"
-          (click)="addFavorite(song)"
-          color="primary" 
-          name="heart-outline"
-        >
-        </ion-icon>
       </ion-col>
 
       <ion-col size="10" class="ion-text-center">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
 import { ModalController } from '@ionic/angular';
 import { AlbumSongsComponent } from '../components/album-songs/album-songs.component';
+import { FavoritesService } from 'src/app/services/favorites.service';
 
 @Component({
   selector: 'app-tab1',
@@ -17,19 +18,23 @@ export class Tab1Page implements OnInit {
   isLoading = false;
 
   song: {
+    id: string,
     preview_url: string,
     playing: boolean,
-    name: string
+    name: string,
+    favorite: boolean
   } = {
+    id: '',
     preview_url: '',
     playing: false,
-    name: ''
+    name: '',
+    favorite: false
   };
-
 
   constructor(
     private spotifySrv: SpotifyService,
-    private modalCtlr: ModalController
+    private modalCtlr: ModalController,
+    private favoritesSrv: FavoritesService
   ) {}
 
   async ngOnInit() {
@@ -54,6 +59,20 @@ export class Tab1Page implements OnInit {
     });
   }
 
+  addFavorite(song) {
+    if (song.id !== '') {
+      this.song.favorite = true;
+      this.favoritesSrv.addFavorite(song);
+    }
+  }
+
+  removeFavorite(id: string) {
+    if (id !== '') {
+      this.song.favorite = false;
+      this.favoritesSrv.removeFavorite(id);
+    }
+  }
+
   async openDetailModal(title: string, songs: any[]) {
     const modal = await this.modalCtlr.create({
         component: AlbumSongsComponent,
@@ -66,9 +85,11 @@ export class Tab1Page implements OnInit {
         this.playSong('new');
       } else {
         this.song = {
+          id: '',
           preview_url: '',
           playing: false,
-          name: ''
+          name: '',
+          favorite: false
         };
       }
     });
@@ -85,6 +106,8 @@ export class Tab1Page implements OnInit {
           this.newTime = ( 1 / this.currentSong.duration ) * this.currentSong.currentTime;
         });
         this.song.playing = true;
+        this.song.favorite = this.favoritesSrv.checkFavorite(this.song.id);
+        console.log(this.song);
         break;
       default:
         this.currentSong.play();

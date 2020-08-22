@@ -3,6 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Plugins } from '@capacitor/core';
+const { Storage } = Plugins;
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,7 @@ export class AuthService {
     try {
       const { attributes } = await Auth.signIn(data.email, data.password);
       this.setUser(attributes);
-      return attributes;
+      await this.saveUser(attributes);
     } catch (e) {
       console.log('error', e);
       if (e.code === 'UserNotConfirmedException') {
@@ -28,7 +30,7 @@ export class AuthService {
         const { data } = await alert.onDidDismiss();
         console.log(data);          
       } else {
-        throw new Error(e);
+        throw e;
       }
     }
   }
@@ -72,5 +74,21 @@ export class AuthService {
 
   setUser(value) {
     this.user.next(value);
+  }
+
+  saveUser(user) {
+    return Storage.set({ key: 'user', value: JSON.stringify(user) });
+  }
+
+  async getUser() {
+    let ret = await Storage.get({ key: 'user' });
+
+    if (ret) {
+      ret = JSON.parse(ret.value);
+    } else {
+      ret = null;
+    }
+    
+    return ret;
   }
 }

@@ -1,0 +1,12 @@
+ion-content {
+  --background: url('~/assets/images/bg.png') 100% 100%;
+}
+
+.favorites-list, ion-list {
+  border-radius: 15px;
+
+}
+.favorites-list {
+  margin: 10px;
+  background-color: white;
+}

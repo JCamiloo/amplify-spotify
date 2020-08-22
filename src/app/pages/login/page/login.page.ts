@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, NavController } from '@ionic/angular';
 import { FormGroup } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { MessengerService } from 'src/app/services/messenger.service';
 
 @Component({

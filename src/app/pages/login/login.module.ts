@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { LoginPage } from './page/login.page';
 import * as fromComponents from './components';
-import * as fromServices from './services';
 
 const routes: Routes = [
   {
@@ -26,9 +25,6 @@ const routes: Routes = [
   declarations: [
     LoginPage,
     ...fromComponents.components
-  ],
-  providers: [
-    ...fromServices.services
   ]
 })
 export class LoginPageModule {}

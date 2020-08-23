@@ -30,7 +30,6 @@ export class FavoritesService {
   }
 
   checkFavorite(id: string) {
-
     const index = this.favorites.find(song => song.id === id);
 
     if (index) {

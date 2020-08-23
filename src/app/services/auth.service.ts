@@ -1,7 +1,8 @@
+import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import { FormGroup } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
-import { Injectable } from '@angular/core';
+import { MessengerService } from './messenger.service'
 import { BehaviorSubject } from 'rxjs';
 import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
@@ -14,7 +15,10 @@ export class AuthService {
   private user = new BehaviorSubject(null);
   user$ = this.user.asObservable();
 
-  constructor(private alertCtrl: AlertController) { }
+  constructor(
+    private alertCtrl: AlertController,
+    private messengerSrv: MessengerService
+  ) { }
 
   async signIn(loginForm: FormGroup) {
     const data = loginForm.getRawValue();
@@ -22,34 +26,33 @@ export class AuthService {
       const { attributes } = await Auth.signIn(data.email, data.password);
       this.setUser(attributes);
       await this.saveUser(attributes);
+      return true;
     } catch (e) {
-      console.log('error', e);
       if (e.code === 'UserNotConfirmedException') {
-        const alert = await this.submitCode();
-        await alert.present();
-        const { data } = await alert.onDidDismiss();
-        console.log(data);          
+        const status = await this.submitCode(data.email);
+        this.validateCodeStatus(status);
+        return false;
       } else {
-        throw e;
+        throw Error(e.code);
       }
     }
   }
 
-  signUp(signUpForm: FormGroup) {
-    const data = signUpForm.getRawValue();
-    return new Promise((resolve, reject) => {
-      Auth.signUp(data.email, data.password)
-      .then((data) => {
-        console.log(data);
-        if (!data.userConfirmed) {
-          
-        }
-      })
-      .catch(e => reject(e));
-    });
+  async signUp(signUpForm: FormGroup) {
+    const formData = signUpForm.getRawValue();
+    try {
+      const data = await Auth.signUp(formData.email, formData.password);
+      if (!data.userConfirmed) {
+        const status = await this.submitCode(formData.email);
+        this.validateCodeStatus(status);
+        return false;
+      }
+    } catch (e) {
+      throw Error(e.code);
+    }
   }
 
-  async submitCode() {
+  async submitCode(username: string) {
     const alert = await this.alertCtrl.create({
       cssClass: 'messenger',
       header: '¡Casi listo!',
@@ -69,7 +72,23 @@ export class AuthService {
       }]
     });
 
-    return await alert;
+    await alert.present();
+    const { data } = await alert.onDidDismiss();
+    
+    try {
+      await Auth.confirmSignUp(username, data.values);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  validateCodeStatus(status: boolean) {
+    if (status) {
+      this.messengerSrv.showMessage('¡Todo listo!', 'Cuenta confirmada, ya puedes iniciar sesión');
+    } else {
+      this.messengerSrv.showMessage('Algo ocurrió', 'El código es incorrecto');
+    }
   }
 
   setUser(value) {
@@ -81,14 +100,14 @@ export class AuthService {
   }
 
   async getUser() {
-    let ret = await Storage.get({ key: 'user' });
+    let user = await Storage.get({ key: 'user' });
 
-    if (ret) {
-      ret = JSON.parse(ret.value);
+    if (user) {
+      user = JSON.parse(user.value);
     } else {
-      ret = null;
+      user = null;
     }
     
-    return ret;
+    return user;
   }
 }

@@ -27,20 +27,31 @@ export class LoginPage implements OnInit {
   async onLogin(loginForm: FormGroup) {
     this.loginLoading = true;
     try {
-      await this.authSrv.signIn(loginForm);
+      const status = await this.authSrv.signIn(loginForm);
+      loginForm.reset();
       this.loginLoading = false;
-      this.navCtrl.navigateRoot('');
+      status && this.navCtrl.navigateRoot('');
     } catch(e) {
-      console.log('error', e)
+      loginForm.reset();
       this.loginLoading = false;
-      await this.messengerSrv.showMessage('Algo sucedió', e.code);
+      const error = e.message.replace('error ', '');
+      await this.messengerSrv.showMessage('Algo sucedió', error);
     }
   }
 
   async onSignUp(signUpForm: FormGroup) {
-    // this.signUpLoading = true;
-    this.authSrv.signUp(signUpForm);
-    // const alert = await this.messengerSrv.showMessage('titulo', 'mensaje');
+    this.signUpLoading = true;
+    try {
+      await this.authSrv.signUp(signUpForm);
+      signUpForm.reset();
+      this.signUpLoading = false;
+      this.onSwipe(0);
+    } catch(e) {
+      this.signUpLoading = false;
+      signUpForm.reset();
+      const error = e.message.replace('error ', '');
+      await this.messengerSrv.showMessage('Algo sucedió', error);
+    }
   }
 
   onSwipe(index: number) {

@@ -26,6 +26,10 @@ export class MessengerService {
         return 'Usuario o contraseña incorrectos';
       case 'UserNotFoundException':
         return 'El usuario no existe';
+      case 'UsernameExistsException':
+        return 'El correo ya está en uso';
+      case 'CodeMismatchException':
+        return 'Código incorrecto. Revisa tu correo e inicia sesión'
       default:
         return content;
     }

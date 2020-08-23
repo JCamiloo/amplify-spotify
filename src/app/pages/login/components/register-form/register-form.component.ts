@@ -28,7 +28,12 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
   }
 
   initPasswordSubcriptions() {
-    this.signUpForm.controls['password'].valueChanges.subscribe((value: string) => {
+    this.passwordField.valueChanges.subscribe((value: string) => {
+      if (!value) {
+        this.passwordField.setValue('', { emitEvent: false });
+        value = '';
+      }
+
       if (value.trim() !== this.passwordConfirmField.value) {
         this.passwordConfirmField.setErrors({ match: true });
       } else {
@@ -36,7 +41,11 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.signUpForm.controls['passwordConfirm'].valueChanges.subscribe((value: string) => {
+    this.passwordConfirmField.valueChanges.subscribe((value: string) => {
+       if (!value) {
+        this.passwordField.setValue('', { emitEvent: false });
+        value = '';
+      }
       if (value.trim() !== this.passwordField.value) {
         this.passwordConfirmField.setErrors({ match: true });
       } else {

@@ -14,7 +14,7 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <div class="favorites-list">
+    <div class="favorites-list" *ngIf="favoriteSongs.length > 0">
       <ion-list>
         <ion-item-sliding
           class="fadeIn fast"
@@ -32,6 +32,10 @@
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>
+    </div>
+
+    <div *ngIf="favoriteSongs.length === 0">
+      No data
     </div>
   </ng-container>
 </ion-content>

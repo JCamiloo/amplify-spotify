@@ -64,7 +64,8 @@
       </p>
     </ion-list>
 
-    <ion-button shape="round" class="mt-10" type="submit">
+    <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+    <ion-button  *ngIf="!isLoading" shape="round" class="mt-10" type="submit">
       Registrar
     </ion-button>
   </form>

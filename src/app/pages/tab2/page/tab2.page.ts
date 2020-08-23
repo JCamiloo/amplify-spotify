@@ -29,7 +29,6 @@ export class Tab2Page implements OnInit {
 
   ngOnInit() {
     this.favoriteSongs = this.favoriteSrv.favoriteSongs;
-    console.log(this.favoriteSongs);
   }
 
   setSong(song) {

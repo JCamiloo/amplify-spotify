@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
+import { Plugins } from '@capacitor/core';
+const { Toast } = Plugins;
 
 @Component({
   selector: 'app-album-songs',
@@ -22,6 +24,14 @@ export class AlbumSongsComponent implements OnInit {
   }
 
   async selectSong(song = null) {
-    await this.modalCtlr.dismiss(song);
+    if (song && song.preview_url) {
+      await this.modalCtlr.dismiss(song);
+    } else {
+      await Toast.show({ text: 'Canción no disponible', position: "top"});
+    }
+  }
+
+  close() {
+    this.modalCtlr.dismiss(null);
   }
 }

@@ -107,7 +107,6 @@ export class Tab1Page implements OnInit {
         });
         this.song.playing = true;
         this.song.favorite = this.favoritesSrv.checkFavorite(this.song.id);
-        console.log(this.song);
         break;
       default:
         this.currentSong.play();

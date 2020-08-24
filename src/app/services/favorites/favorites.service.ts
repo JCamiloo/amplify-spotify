@@ -18,7 +18,8 @@ export class FavoritesService {
   async getFavorites() {
     const session = await Auth.currentSession();
     this.username = session.getAccessToken().payload.username;
-    this.http.get(`${environment.AWS_URL}/${this.username}`).subscribe((favorites: any) => this.favorites = favorites);
+    this.http.get(`${environment.AWS_URL}/${this.username}`)
+      .subscribe((favorites: any) => this.favorites = favorites);
   }
 
   private udapteFavorites() {
@@ -41,7 +42,12 @@ export class FavoritesService {
 
   addFavorite(song) {
     this.favorites.unshift(song);
-    this.udapteFavorites().subscribe(() => Toast.show({ text: 'Canción agregada a favoritos', position: "top"}));
+    this.udapteFavorites().subscribe(() => {
+      Toast.show({ 
+        text: 'Canción agregada a favoritos', 
+        position: "center" 
+      });
+    });
   }
 
   removeFavorite(id: string) {
@@ -49,7 +55,12 @@ export class FavoritesService {
 
     if (index !== -1) {
       this.favorites.splice(index, 1);
-      this.udapteFavorites().subscribe(() => Toast.show({ text: 'Canción eliminada de favoritos', position: "top"}));
+      this.udapteFavorites().subscribe(() => {
+        Toast.show({ 
+          text: 'Canción eliminada de favoritos', 
+          position: "center"
+        });
+      });
     }
   }
 

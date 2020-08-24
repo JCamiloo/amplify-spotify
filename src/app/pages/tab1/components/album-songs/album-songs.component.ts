@@ -27,7 +27,7 @@ export class AlbumSongsComponent implements OnInit {
     if (song && song.preview_url) {
       await this.modalCtlr.dismiss(song);
     } else {
-      await Toast.show({ text: 'Canción no disponible', position: "top"});
+      await Toast.show({ text: 'Canción no disponible', position: "center" });
     }
   }
 

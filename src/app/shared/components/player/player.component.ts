@@ -2,6 +2,8 @@ import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/cor
 import { PlayerSong } from '../../../models';
 import { FavoritesService, PlayerService } from '../../../services';
 import { Subscription } from 'rxjs';
+import { Plugins } from '@capacitor/core';
+const { Toast } = Plugins;
 
 @Component({
   selector: 'app-player',
@@ -12,7 +14,6 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   currentSong: HTMLAudioElement;
   newTime = 0;
-
   @Input() song: PlayerSong = {
     id: '',
     preview_url: '',
@@ -22,7 +23,6 @@ export class PlayerComponent implements OnInit, OnChanges {
   };
 
   playerSubscription: Subscription;
-
 
   constructor(
     private favoritesSrv: FavoritesService,
@@ -57,9 +57,11 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   addFavorite(song) {
-    if (song.id !== '') {
+    if (song && song.id !== '') {
       this.song.favorite = true;
       this.favoritesSrv.addFavorite(song);
+    } else {
+      Toast.show({ text: 'Debes seleccionar una canción', position: "center" });
     }
   }
 
@@ -87,8 +89,12 @@ export class PlayerComponent implements OnInit, OnChanges {
         this.song.favorite = this.favoritesSrv.checkFavorite(this.song.id);
         break;
       default:
-        this.currentSong.play();
-        this.song.playing = true;
+        if (this.song.preview_url !== '') {
+          this.currentSong.play();
+          this.song.playing = true;
+        } else {
+          Toast.show({ text: 'Debes seleccionar una canción', position: "center"});
+        }
     }
   }
 

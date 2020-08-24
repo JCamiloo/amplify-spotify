@@ -10,3 +10,14 @@ ion-content {
   margin: 10px;
   background-color: white;
 }
+
+.card-no-data {
+  flex-direction: column;
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 80px;
+  }
+}

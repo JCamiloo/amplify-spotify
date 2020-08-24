@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FavoritesService } from '../../../services/favorites.service';
+import { FavoritesService } from '../../../services';
 
 @Component({
   selector: 'app-tab2',

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
 import { ModalController } from '@ionic/angular';
 import { AlbumSongsComponent } from '../components/album-songs/album-songs.component';
-import { FavoritesService } from 'src/app/services/favorites.service';
+import { FavoritesService } from '../../../services';
 
 @Component({
   selector: 'app-tab1',
@@ -39,11 +39,16 @@ export class Tab1Page implements OnInit {
 
   async ngOnInit() {
     this.isLoading = true;
+    this.favoritesSrv.getFavorites();
+    await this.loadData();
+    this.isLoading = false;
+  }
+
+  async loadData() {
     await this.spotifySrv.getToken();
     this.spotifySrv.getNewReleases().subscribe(releases => {
       this.songs = releases.filter(e => e.album_type === 'single');
       this.albums = releases.filter(e => e.album_type === 'album');
-      this.isLoading = false;
     });
   }
 

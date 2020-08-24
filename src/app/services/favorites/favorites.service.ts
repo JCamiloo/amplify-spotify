@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Auth } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
+import { Plugins } from '@capacitor/core';
+const { Toast } = Plugins;
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,9 @@ export class FavoritesService {
   private favorites = [];
   private username = '';
 
-  constructor(private http: HttpClient) {
-    this.getFavorites();
-  }
+  constructor(private http: HttpClient) { }
 
-  private async getFavorites() {
+  async getFavorites() {
     const session = await Auth.currentSession();
     this.username = session.getAccessToken().payload.username;
     this.http.get(`${environment.AWS_URL}/${this.username}`).subscribe((favorites: any) => this.favorites = favorites);
@@ -26,7 +26,7 @@ export class FavoritesService {
       username: this.username,
       favorites: this.favorites
     };
-    this.http.post(`${environment.AWS_URL}`, JSON.stringify(data)).subscribe(console.log);
+    return this.http.post(`${environment.AWS_URL}`, JSON.stringify(data));
   }
 
   checkFavorite(id: string) {
@@ -41,7 +41,7 @@ export class FavoritesService {
 
   addFavorite(song) {
     this.favorites.unshift(song);
-    this.udapteFavorites();
+    this.udapteFavorites().subscribe(() => Toast.show({ text: 'Canción agregada a favoritos', position: "top"}));
   }
 
   removeFavorite(id: string) {
@@ -49,7 +49,7 @@ export class FavoritesService {
 
     if (index !== -1) {
       this.favorites.splice(index, 1);
-      this.udapteFavorites();
+      this.udapteFavorites().subscribe(() => Toast.show({ text: 'Canción eliminada de favoritos', position: "top"}));
     }
   }
 

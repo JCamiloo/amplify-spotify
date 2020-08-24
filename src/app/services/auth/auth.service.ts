@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import { FormGroup } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
-import { MessengerService } from './messenger.service'
+import { AlertController, NavController } from '@ionic/angular';
+import { MessengerService } from '../messenger/messenger.service'
 import { BehaviorSubject } from 'rxjs';
 import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
@@ -17,7 +17,8 @@ export class AuthService {
 
   constructor(
     private alertCtrl: AlertController,
-    private messengerSrv: MessengerService
+    private messengerSrv: MessengerService,
+    private navCtrl: NavController
   ) { }
 
   async signIn(loginForm: FormGroup) {
@@ -36,6 +37,12 @@ export class AuthService {
         throw Error(e.code);
       }
     }
+  }
+
+  signOut() {
+    Auth.signOut();
+    Storage.clear();
+    this.navCtrl.navigateRoot('/login');
   }
 
   async signUp(signUpForm: FormGroup) {
@@ -88,6 +95,17 @@ export class AuthService {
       this.messengerSrv.showMessage('¡Todo listo!', 'Cuenta confirmada, ya puedes iniciar sesión');
     } else {
       this.messengerSrv.showMessage('Algo ocurrió', 'El código es incorrecto');
+    }
+  }
+
+  async checkToken() {
+    const user = await this.getUser();
+    
+    if (user) {
+      return true;
+    } else {
+      this.navCtrl.navigateRoot('login');
+      return false;
     }
   }
 

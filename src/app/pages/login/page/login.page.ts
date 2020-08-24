@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonSlides, NavController } from '@ionic/angular';
 import { FormGroup } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
-import { MessengerService } from 'src/app/services/messenger.service';
+import { AuthService, MessengerService } from '../../../services';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
   @ViewChild('mainSlide', {static: true}) mainSlide: IonSlides;
   signUpLoading = false;
@@ -20,9 +19,6 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private messengerSrv: MessengerService
   ) { }
-
-  ngOnInit() {
-  }
 
   async onLogin(loginForm: FormGroup) {
     this.loginLoading = true;
@@ -35,7 +31,8 @@ export class LoginPage implements OnInit {
       loginForm.reset();
       this.loginLoading = false;
       const error = e.message.replace('error ', '');
-      await this.messengerSrv.showMessage('Algo sucedió', error);
+      const alert = await this.messengerSrv.showMessage('Algo sucedió', error);
+      alert.present();
     }
   }
 
@@ -50,7 +47,8 @@ export class LoginPage implements OnInit {
       this.signUpLoading = false;
       signUpForm.reset();
       const error = e.message.replace('error ', '');
-      await this.messengerSrv.showMessage('Algo sucedió', error);
+      const alert = await this.messengerSrv.showMessage('Algo sucedió', error);
+      alert.present();
     }
   }
 

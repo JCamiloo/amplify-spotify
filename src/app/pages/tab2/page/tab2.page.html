@@ -34,8 +34,11 @@
       </ion-list>
     </div>
 
-    <div *ngIf="favoriteSongs.length === 0">
-      No data
+    <div *ngIf="favoriteSongs.length === 0" class="card">
+      <div class="card-no-data">
+        <ion-icon name="sad-outline" color="primary"></ion-icon>
+        <p> Aún no tienes canciones favoritas </p>
+      </div>
     </div>
   </ng-container>
 </ion-content>

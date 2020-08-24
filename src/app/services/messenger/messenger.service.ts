@@ -8,16 +8,40 @@ export class MessengerService {
 
   constructor(private alertCtrl: AlertController) { }
 
-  async showMessage(header: string, content: string) {
+  async showMessage(header: string, content: string, buttons?: string[]) {
     const alert = await this.alertCtrl.create({
       cssClass: 'messenger',
       backdropDismiss: false,
       header,
       message: this.getMessage(content),
-      buttons: ['Aceptar']
+      buttons: this.getAlertButtons(buttons)
     });
 
-    return await alert.present();
+    return alert;
+  }
+
+  private getAlertButtons(buttons: string[]) {
+    let alertButtons = [];
+
+    if (!buttons) {
+      return [{ 
+        text: 'Aceptar', 
+        handler: () => { 
+          return { values: true };
+        } 
+      }];
+    } else {
+      alertButtons = buttons.map((nombreBoton, index) => {
+        return ({ 
+          text: nombreBoton, 
+          handler: () => { 
+            return { values: index === 0 ? false : true };
+          } 
+        });
+      })
+    }
+
+    return alertButtons;
   }
 
   private getMessage(content: string) {

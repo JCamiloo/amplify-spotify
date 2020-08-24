@@ -1,5 +1,9 @@
 import { Album } from './album';
 
+export interface AlbumsResponse {
+  albums: Albums
+}
+
 export interface Albums {
   href:     string;
   items:    Album[],

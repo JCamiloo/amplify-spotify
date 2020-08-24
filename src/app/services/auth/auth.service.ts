@@ -22,7 +22,7 @@ export class AuthService {
   ) { }
 
   async signIn(loginForm: FormGroup) {
-    const data = loginForm.getRawValue();
+    const data: { email: string, password: string } = loginForm.getRawValue();
     try {
       const { attributes } = await Auth.signIn(data.email, data.password);
       this.setUser(attributes);
@@ -46,7 +46,7 @@ export class AuthService {
   }
 
   async signUp(signUpForm: FormGroup) {
-    const formData = signUpForm.getRawValue();
+    const formData: { email: string, password: string } = signUpForm.getRawValue();
     try {
       const data = await Auth.signUp(formData.email, formData.password);
       if (!data.userConfirmed) {

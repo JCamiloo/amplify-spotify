@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AlbumSongsComponent } from '../components/album-songs/album-songs.component';
 import { FavoritesService, SpotifyService } from '../../../services';
-import { PlayerSong } from '../../../models';
+import { Album, Song } from '../../../models';
 
 @Component({
   selector: 'app-tab1',
@@ -11,10 +11,9 @@ import { PlayerSong } from '../../../models';
 })
 export class Tab1Page implements OnInit {
 
-  songs = [];
-  albums = [];
+  albums: Album[] = [];
   isLoading = false;
-  song: PlayerSong = {
+  song: Partial<Song> = {
     id: '',
     preview_url: '',
     playing: false,
@@ -37,25 +36,23 @@ export class Tab1Page implements OnInit {
 
   async loadData() {
     await this.spotifySrv.fetchToken();
-    this.spotifySrv.getNewReleases().subscribe(releases => {
-      this.songs = releases.filter(e => e.album_type === 'single');
-      this.albums = releases.filter(e => e.album_type === 'album');
-    });
+    this.spotifySrv.getNewReleases().subscribe(releases => this.albums = releases);
   }
 
-  showAlbumSongs(album: any) {
-    this.spotifySrv.getAlbumTracks(album.id).subscribe((albumResp: any) => {
+  showAlbumSongs(album: Album) {
+    this.spotifySrv.getAlbumTracks(album.id).subscribe((albumResp) => {
+      console.log(albumResp);
       this.openDetailModal(album.name, albumResp.items);
     });
   }
 
-  async openDetailModal(title: string, songs: any[]) {
+  async openDetailModal(title: string, songs: Song[]) {
     const modal = await this.modalCtlr.create({
       component: AlbumSongsComponent,
       componentProps: { title, songs }
     });
 
-    modal.onDidDismiss().then(song => {
+    modal.onDidDismiss().then((song: { data: Song }) => {
       if (song.data) {
         this.song = song.data
       }

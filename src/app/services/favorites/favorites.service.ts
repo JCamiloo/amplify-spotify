@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Auth } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { Plugins } from '@capacitor/core';
+import { Song } from 'src/app/models';
 const { Toast } = Plugins;
 
 @Injectable({
@@ -10,7 +11,7 @@ const { Toast } = Plugins;
 })
 export class FavoritesService {
 
-  private favorites = [];
+  private favorites: Song[] = [];
   private username = '';
 
   constructor(private http: HttpClient) { }
@@ -18,8 +19,8 @@ export class FavoritesService {
   async getFavorites() {
     const session = await Auth.currentSession();
     this.username = session.getAccessToken().payload.username;
-    this.http.get(`${environment.AWS_URL}/${this.username}`)
-      .subscribe((favorites: any) => this.favorites = favorites);
+    this.http.get<Song[]>(`${environment.AWS_URL}/${this.username}`)
+      .subscribe((favorites) => this.favorites = favorites);
   }
 
   private udapteFavorites() {
@@ -40,7 +41,7 @@ export class FavoritesService {
     }
   }
 
-  addFavorite(song) {
+  addFavorite(song: Song) {
     this.favorites.unshift(song);
     this.udapteFavorites().subscribe(() => {
       Toast.show({ 

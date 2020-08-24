@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { Plugins } from '@capacitor/core';
+import { AlbumsResponse, AlbumDetail } from '../../models';
 const { Storage } = Plugins;
 
 @Injectable({
@@ -22,11 +23,11 @@ export class SpotifyService {
   }
 
   getNewReleases() {
-    return this.http.get(`${environment.SPOTIFY_URL}/browse/new-releases?country=CO&limit=30`).pipe(map(data => data['albums'].items));
+    return this.http.get<AlbumsResponse>(`${environment.SPOTIFY_URL}/browse/new-releases?country=CO&limit=30`).pipe(map(data => data.albums.items));
   }
 
   getAlbumTracks(albumId: string) {
-    return this.http.get(`${environment.SPOTIFY_URL}/albums/${albumId}/tracks?country=CO`);
+    return this.http.get<AlbumDetail>(`${environment.SPOTIFY_URL}/albums/${albumId}/tracks?country=CO`);
   }
 
   setToken(token: string) {

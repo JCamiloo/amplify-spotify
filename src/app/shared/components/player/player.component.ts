@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
-import { PlayerSong } from '../../../models';
+import { Song } from '../../../models';
 import { FavoritesService, PlayerService } from '../../../services';
 import { Subscription } from 'rxjs';
 import { Plugins } from '@capacitor/core';
@@ -14,7 +14,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   currentSong: HTMLAudioElement;
   newTime = 0;
-  @Input() song: PlayerSong = {
+  @Input() song: Partial<Song> = {
     id: '',
     preview_url: '',
     playing: false,
@@ -34,7 +34,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const song: PlayerSong = changes['song'].currentValue;
+    const song: Partial<Song> = changes['song'].currentValue;
     if (song && song.preview_url !== '' ) {
       this.playSong('new');
     } else {

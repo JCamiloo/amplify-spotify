@@ -1,5 +1,6 @@
 import { Artist } from './artist';
 import { ExternalUrls } from './external_urls';
+import { Song } from './song';
 
 export interface Album {
   album_type:             string;
@@ -15,6 +16,16 @@ export interface Album {
   total_tracks:           number;
   type:                   string;
   uri:                    string;
+}
+
+export interface AlbumDetail {
+  href:     string;
+  items:    Song[];
+  limit:    number;
+  next:     string;
+  offset:   number;
+  previous: string;
+  total:    number;
 }
 
 interface Images {

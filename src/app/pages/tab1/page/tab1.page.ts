@@ -22,10 +22,10 @@ export class Tab1Page implements OnInit {
     name: '',
     favorite: false
   };
-  
+
   constructor(
-    private spotifySrv: SpotifyService,
     private modalCtlr: ModalController,
+    private spotifySrv: SpotifyService,
     private favoritesSrv: FavoritesService
   ) {}
 

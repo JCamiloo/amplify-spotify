@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService, MessengerService } from 'src/app/services';
+import { AuthService, MessengerService, PlayerService } from '../../services';
 
 @Component({
   selector: 'app-tabs',
@@ -10,8 +10,14 @@ export class TabsPage {
 
   constructor(
     private messengerSrv: MessengerService,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private playerSrv: PlayerService
   ) {}
+  
+  tabChanged(event: { tab: string }) {
+    this.playerSrv.setCurrentTab(event.tab);
+  }
+
 
   async signOut() {
     const alert = await this.messengerSrv.showMessage(

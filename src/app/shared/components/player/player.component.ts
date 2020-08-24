@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { PlayerSong } from '../../../models';
-import { FavoritesService } from 'src/app/services';
+import { FavoritesService, PlayerService } from '../../../services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player',
@@ -20,9 +21,17 @@ export class PlayerComponent implements OnInit, OnChanges {
     favorite: false
   };
 
-  constructor(private favoritesSrv: FavoritesService) { }
+  playerSubscription: Subscription;
 
-  ngOnInit() {}
+
+  constructor(
+    private favoritesSrv: FavoritesService,
+    private playerSrv: PlayerService
+  ) { }
+
+  ngOnInit() {
+    this.initPlayerSubscription();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const song: PlayerSong = changes['song'].currentValue;
@@ -37,6 +46,14 @@ export class PlayerComponent implements OnInit, OnChanges {
         favorite: false
       };
     }
+  }
+
+  initPlayerSubscription() {
+    this.playerSubscription = this.playerSrv.tabChanged$.subscribe(() => {
+      if (this.song && this.song.playing) {
+        this.pauseSong();
+      }
+    });
   }
 
   addFavorite(song) {
@@ -78,5 +95,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   pauseSong() {
     this.currentSong.pause();
     this.song.playing = false;
+  }
+
+  ngOnDestroy() {
+    this.playerSubscription.unsubscribe();
   }
 }

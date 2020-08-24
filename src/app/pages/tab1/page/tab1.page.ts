@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SpotifyService } from '../services/spotify.service';
 import { ModalController } from '@ionic/angular';
 import { AlbumSongsComponent } from '../components/album-songs/album-songs.component';
-import { FavoritesService } from '../../../services';
+import { FavoritesService, SpotifyService } from '../../../services';
 import { PlayerSong } from '../../../models';
 
 @Component({
@@ -37,16 +36,10 @@ export class Tab1Page implements OnInit {
   }
 
   async loadData() {
-    await this.spotifySrv.getToken();
+    await this.spotifySrv.fetchToken();
     this.spotifySrv.getNewReleases().subscribe(releases => {
       this.songs = releases.filter(e => e.album_type === 'single');
       this.albums = releases.filter(e => e.album_type === 'album');
-    });
-  }
-
-  showSongs(artist: any) {
-    this.spotifySrv.getArtistTopTracks(artist.id).subscribe((songs: any) => {
-      this.openDetailModal(artist.name + ' - Top Tracks', songs.tracks);
     });
   }
 

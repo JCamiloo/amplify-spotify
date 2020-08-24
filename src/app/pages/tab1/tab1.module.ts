@@ -2,10 +2,11 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Tab1Page } from './page/tab1.page';
+import { SharedModule } from '../../shared/shared.module'; 
 import { Routes, RouterModule } from '@angular/router';
+
+import { Tab1Page } from './page/tab1.page';
 import * as fromComponents from './components';
-import * as fromPipes from './pipes';
 
 const routes: Routes = [
   {
@@ -19,12 +20,12 @@ const routes: Routes = [
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
   declarations: [
     Tab1Page,
     ...fromComponents.components,
-    ...fromPipes.pipes
   ]
 })
 export class Tab1PageModule {}

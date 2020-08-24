@@ -3,6 +3,7 @@ import { SpotifyService } from '../services/spotify.service';
 import { ModalController } from '@ionic/angular';
 import { AlbumSongsComponent } from '../components/album-songs/album-songs.component';
 import { FavoritesService } from '../../../services';
+import { PlayerSong } from '../../../models';
 
 @Component({
   selector: 'app-tab1',
@@ -13,24 +14,15 @@ export class Tab1Page implements OnInit {
 
   songs = [];
   albums = [];
-  currentSong: HTMLAudioElement;
-  newTime;
   isLoading = false;
-
-  song: {
-    id: string,
-    preview_url: string,
-    playing: boolean,
-    name: string,
-    favorite: boolean
-  } = {
+  song: PlayerSong = {
     id: '',
     preview_url: '',
     playing: false,
     name: '',
     favorite: false
   };
-
+  
   constructor(
     private spotifySrv: SpotifyService,
     private modalCtlr: ModalController,
@@ -64,63 +56,18 @@ export class Tab1Page implements OnInit {
     });
   }
 
-  addFavorite(song) {
-    if (song.id !== '') {
-      this.song.favorite = true;
-      this.favoritesSrv.addFavorite(song);
-    }
-  }
-
-  removeFavorite(id: string) {
-    if (id !== '') {
-      this.song.favorite = false;
-      this.favoritesSrv.removeFavorite(id);
-    }
-  }
-
   async openDetailModal(title: string, songs: any[]) {
     const modal = await this.modalCtlr.create({
-        component: AlbumSongsComponent,
-        componentProps: { title, songs }
+      component: AlbumSongsComponent,
+      componentProps: { title, songs }
     });
 
     modal.onDidDismiss().then(song => {
       if (song.data) {
         this.song = song.data
-        this.playSong('new');
-      } else {
-        this.song = {
-          id: '',
-          preview_url: '',
-          playing: false,
-          name: '',
-          favorite: false
-        };
       }
     });
+
     return await modal.present();
-  }
-
-  playSong(action: string) {
-    switch(action) {
-      case 'new': 
-        this.currentSong && this.currentSong.pause();
-        this.currentSong = new Audio(this.song.preview_url);
-        this.currentSong.play();
-        this.currentSong.addEventListener('timeupdate', () => {
-          this.newTime = ( 1 / this.currentSong.duration ) * this.currentSong.currentTime;
-        });
-        this.song.playing = true;
-        this.song.favorite = this.favoritesSrv.checkFavorite(this.song.id);
-        break;
-      default:
-        this.currentSong.play();
-        this.song.playing = true;
-    }
-  }
-
-  pauseSong() {
-    this.currentSong.pause();
-    this.song.playing = false;
   }
 }

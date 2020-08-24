@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FavoritesService } from '../../../services';
+import { PlayerSong } from '../../../models';
 
 @Component({
   selector: 'app-tab2',
@@ -9,53 +10,26 @@ import { FavoritesService } from '../../../services';
 export class Tab2Page implements OnInit {
 
   favoriteSongs = [];
-  currentSong: HTMLAudioElement;
-  newTime;
   isLoading = false;
 
-  song: {
-    preview_url: string,
-    playing: boolean,
-    name: string
-  } = {
+  song: PlayerSong = {
+    id: '',
     preview_url: '',
     playing: false,
-    name: ''
+    name: '',
+    favorite: false
   };
 
-  constructor(private favoriteSrv: FavoritesService) {
+  constructor(private favoritesSrv: FavoritesService) {
     
   }
 
   ngOnInit() {
-    this.favoriteSongs = this.favoriteSrv.favoriteSongs;
+    this.favoriteSongs = this.favoritesSrv.favoriteSongs;
   }
 
-  setSong(song) {
+  setSong(song: PlayerSong) {
     this.song = song;
-    this.playSong('new');
-  }
-
-  playSong(action: string) {
-    switch(action) {
-      case 'new': 
-        this.currentSong && this.currentSong.pause();
-        this.currentSong = new Audio(this.song.preview_url);
-        this.currentSong.play();
-        this.currentSong.addEventListener('timeupdate', () => {
-          this.newTime = ( 1 / this.currentSong.duration ) * this.currentSong.currentTime;
-        });
-        this.song.playing = true;
-        break;
-      default:
-        this.currentSong.play();
-        this.song.playing = true;
-    }
-  }
-
-  pauseSong() {
-    this.currentSong.pause();
-    this.song.playing = false;
   }
 
 }

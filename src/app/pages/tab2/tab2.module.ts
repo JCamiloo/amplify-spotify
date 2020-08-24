@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 import { Tab2Page } from './page/tab2.page';
-import { SongDurationPipe } from '../tab1/pipes';
 
 const routes: Routes = [
   {
@@ -19,8 +19,9 @@ const routes: Routes = [
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
-  declarations: [Tab2Page, SongDurationPipe]
+  declarations: [Tab2Page]
 })
 export class Tab2PageModule {}

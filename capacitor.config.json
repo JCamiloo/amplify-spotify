@@ -1,12 +1,12 @@
 {
   "appId": "com.music.app",
-  "appName": "music",
+  "appName": "Pragmatify",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchShowDuration": 10000
     }
   },
   "cordova": {
@@ -17,7 +17,7 @@
       "FadeSplashScreenDuration": "300",
       "SplashShowOnlyFirstTime": "false",
       "SplashScreen": "screen",
-      "SplashScreenDelay": "3000"
+      "SplashScreenDelay": "10000"
     }
   }
 }

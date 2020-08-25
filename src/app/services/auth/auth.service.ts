@@ -26,6 +26,11 @@ export class AuthService {
     this.loadUser();
   }
 
+  /**
+   * Retorna true o false para validar el acceso, si el usuario no ha activado
+   * su cuenta abre el alert para ingresar el código y validarlo.
+   * @param {FormGroup} loginForm Formulario de inicio de sesión
+   */
   async signIn(loginForm: FormGroup) {
     const data: { email: string, password: string } = loginForm.getRawValue();
     try {
@@ -44,12 +49,21 @@ export class AuthService {
     }
   }
 
+  /**
+   * Limpia el local storage y redireciona al login.
+   */
   signOut() {
     Auth.signOut();
     Storage.clear();
     this.navCtrl.navigateRoot('/login');
   }
 
+  /**
+   * Retorna true o false para validar el estado del registro, cuando es exitoso
+   * se abre el alert para la validación del código que se envía al correo
+   * ingresado.
+   * @param {FormGroup} signUpForm Formulario de registro
+   */
   async signUp(signUpForm: FormGroup) {
     const formData: { email: string, password: string } = signUpForm.getRawValue();
     try {
@@ -63,6 +77,13 @@ export class AuthService {
       throw Error(e.code);
     }
   }
+
+  /**
+   * Abre un alert para ingresar el código de verificación de correo,
+   * valida el código y retorna true o false dependiendo del nuevo estado
+   * de la cuenta (verificada/ no verificada).
+   * @param {string} username nombre de usuario asignado por cognito.
+   */
 
   async submitCode(username: string) {
     const alert = await this.alertCtrl.create({
@@ -95,6 +116,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Crea un alert para dar feedback al usuario dependiendo del estado
+   * de la validación del código.
+   * @param status estado de la verificación del código
+   */
   validateCodeStatus(status: boolean) {
     if (status) {
       this.messengerSrv.showMessage(
@@ -109,6 +135,10 @@ export class AuthService {
     }
   }
 
+  /**
+   * Método usado por el user.guard para validar el acceso revisando si hay
+   * token guardado en el storage, de lo contrario redirecciona al login.
+   */
   async checkToken() {
     const user = await this.getUser();
     
@@ -120,9 +150,14 @@ export class AuthService {
     }
   }
 
+  /**
+   * Controla el valor del behaviorSubject del usuario
+   * @param value 
+   */
   setUser(value) {
     this.user.next(value);
   }
+
 
   saveUser(user) {
     return Storage.set({ key: 'user', value: JSON.stringify(user) });

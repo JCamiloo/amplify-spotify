@@ -5,6 +5,7 @@ import { AlertController, NavController } from '@ionic/angular';
 import { MessengerService } from '../messenger/messenger.service'
 import { BehaviorSubject } from 'rxjs';
 import { Plugins } from '@capacitor/core';
+import { User } from '../../interfaces';
 const { Storage } = Plugins;
 
 @Injectable({
@@ -12,14 +13,16 @@ const { Storage } = Plugins;
 })
 export class AuthService {
 
-  private user = new BehaviorSubject(null);
+  private user = new BehaviorSubject<User>(null);
   user$ = this.user.asObservable();
 
   constructor(
     private alertCtrl: AlertController,
     private messengerSrv: MessengerService,
     private navCtrl: NavController
-  ) { }
+  ) { 
+    this.loadUser();
+  }
 
   async signIn(loginForm: FormGroup) {
     const data: { email: string, password: string } = loginForm.getRawValue();
@@ -127,5 +130,13 @@ export class AuthService {
     }
     
     return user;
+  }
+
+  loadUser() {
+    this.getUser().then((user) => {
+      if (user) {
+        this.setUser(user);
+      }
+    });
   }
 }

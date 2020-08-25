@@ -1,10 +1,9 @@
-import { Artist } from './artist';
-import { ExternalUrls } from './external_urls';
+import { Artist } from './artist.interface';
+import { ExternalUrls } from './external_urls.interface';
 
 export interface Song {
   artists:           Artist[];
   available_markets: string[];
-  photo:             string;
   disc_number:       number;
   duration_ms:       number;
   explicit:          boolean;

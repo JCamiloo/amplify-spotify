@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavParams } from '@ionic/angular';
 
 import { AlbumSongsComponent } from './album-songs.component';
 
@@ -10,7 +10,8 @@ describe('AlbumSongsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AlbumSongsComponent ],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot()],
+      providers: [NavParams]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AlbumSongsComponent);

@@ -1,20 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { RegisterFormComponent } from './register-form.component';
-import { FormBuilder } from '@angular/forms';
+import { Tab1Page } from './tab1.page';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { UrlSerializer } from '@angular/router';
 
-describe('RegisterFormComponent', () => {
-  let component: RegisterFormComponent;
-  let fixture: ComponentFixture<RegisterFormComponent>;
+describe('Tab1Page', () => {
+  let component: Tab1Page;
+  let fixture: ComponentFixture<Tab1Page>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterFormComponent ],
+      declarations: [Tab1Page],
       imports: [IonicModule.forRoot()],
-      providers: [FormBuilder]
+      providers: [HttpClient, HttpHandler, UrlSerializer]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RegisterFormComponent);
+    fixture = TestBed.createComponent(Tab1Page);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

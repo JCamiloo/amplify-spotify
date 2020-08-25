@@ -1,4 +1,4 @@
-import { Album } from './album';
+import { Album } from './album.interface';
 
 export interface AlbumsResponse {
   albums: Albums

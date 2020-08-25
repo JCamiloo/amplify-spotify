@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
-import { Song } from '../../../models';
-import { FavoritesService, PlayerService } from '../../../services';
+import { FavoritesService, PlayerService, AuthService } from '../../../services';
+import { Song, User } from '../../../interfaces';
 import { Subscription } from 'rxjs';
 import { Plugins } from '@capacitor/core';
 const { Toast } = Plugins;
@@ -12,8 +12,10 @@ const { Toast } = Plugins;
 })
 export class PlayerComponent implements OnInit, OnChanges {
 
+  user: User;
   currentSong: HTMLAudioElement;
   newTime = 0;
+  subscriptions: Subscription[] = [];
   @Input() song: Partial<Song> = {
     id: '',
     preview_url: '',
@@ -22,12 +24,15 @@ export class PlayerComponent implements OnInit, OnChanges {
     favorite: false
   };
 
-  playerSubscription: Subscription;
-
   constructor(
     private favoritesSrv: FavoritesService,
-    private playerSrv: PlayerService
-  ) { }
+    private playerSrv: PlayerService,
+    private authSrv: AuthService
+  ) {
+    this.subscriptions.push(
+      this.authSrv.user$.subscribe((user) => this.user = user)
+    );
+   }
 
   ngOnInit() {
     this.initPlayerSubscription();
@@ -49,17 +54,19 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   initPlayerSubscription() {
-    this.playerSubscription = this.playerSrv.tabChanged$.subscribe(() => {
-      if (this.song && this.song.playing) {
-        this.pauseSong();
-      }
-    });
+    this.subscriptions.push(
+      this.playerSrv.tabChanged$.subscribe(() => {
+        if (this.song && this.song.playing) {
+          this.pauseSong();
+        }
+      })
+    );
   }
 
   addFavorite(song) {
     if (song && song.id !== '') {
       this.song.favorite = true;
-      this.favoritesSrv.addFavorite(song);
+      this.favoritesSrv.addFavorite(this.user.sub, song);
     } else {
       Toast.show({ text: 'Debes seleccionar una canción', position: "center" });
     }
@@ -68,7 +75,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   removeFavorite(id: string) {
     if (id !== '') {
       this.song.favorite = false;
-      this.favoritesSrv.removeFavorite(id);
+      this.favoritesSrv.removeFavorite(this.user.sub, id);
     }
   }
 
@@ -104,6 +111,6 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    this.playerSubscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

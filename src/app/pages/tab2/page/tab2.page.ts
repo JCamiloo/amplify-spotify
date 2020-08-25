@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FavoritesService } from '../../../services';
-import { PlayerSong } from '../../../models';
+import { Song } from '../../../interfaces';
 
 @Component({
   selector: 'app-tab2',
@@ -9,10 +9,10 @@ import { PlayerSong } from '../../../models';
 })
 export class Tab2Page implements OnInit {
 
-  favoriteSongs = [];
+  favoriteSongs: Song[] = [];
   isLoading = false;
 
-  song: PlayerSong = {
+  song: Partial<Song> = {
     id: '',
     preview_url: '',
     playing: false,
@@ -20,16 +20,13 @@ export class Tab2Page implements OnInit {
     favorite: false
   };
 
-  constructor(private favoritesSrv: FavoritesService) {
-    
-  }
+  constructor(private favoritesSrv: FavoritesService) {}
 
   ngOnInit() {
     this.favoriteSongs = this.favoritesSrv.favoriteSongs;
   }
 
-  setSong(song: PlayerSong) {
+  setSong(song: Song) {
     this.song = song;
   }
-
 }

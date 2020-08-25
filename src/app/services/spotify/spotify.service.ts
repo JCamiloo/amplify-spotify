@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
 import { environment } from '../../../environments/environment';
 import { Plugins } from '@capacitor/core';
-import { AlbumsResponse, AlbumDetail } from '../../models';
+import { AlbumsResponse, AlbumDetail } from '../../interfaces';
 const { Storage } = Plugins;
 
 @Injectable({

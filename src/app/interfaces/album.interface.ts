@@ -1,6 +1,6 @@
-import { Artist } from './artist';
-import { ExternalUrls } from './external_urls';
-import { Song } from './song';
+import { Artist } from './artist.interface';
+import { ExternalUrls } from './external_urls.interface';
+import { Song } from './song.interface';
 
 export interface Album {
   album_type:             string;

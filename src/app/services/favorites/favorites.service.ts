@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Auth } from 'aws-amplify';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { Plugins } from '@capacitor/core';
-import { Song } from 'src/app/models';
+import { Song } from '../../interfaces';
 const { Toast } = Plugins;
 
 @Injectable({
@@ -12,22 +11,15 @@ const { Toast } = Plugins;
 export class FavoritesService {
 
   private favorites: Song[] = [];
-  private username = '';
 
   constructor(private http: HttpClient) { }
 
-  async getFavorites() {
-    const session = await Auth.currentSession();
-    this.username = session.getAccessToken().payload.username;
-    this.http.get<Song[]>(`${environment.AWS_URL}/${this.username}`)
-      .subscribe((favorites) => this.favorites = favorites);
+  getFavorites(username: string) {
+    return this.http.get<Song[]>(`${environment.AWS_URL}/${username}`);
   }
 
-  private udapteFavorites() {
-    const data = {
-      username: this.username,
-      favorites: this.favorites
-    };
+  private udapteFavorites(username: string) {
+    const data = { username, favorites: this.favorites };
     return this.http.post(`${environment.AWS_URL}`, JSON.stringify(data));
   }
 
@@ -41,9 +33,9 @@ export class FavoritesService {
     }
   }
 
-  addFavorite(song: Song) {
+  addFavorite(username: string, song: Song) {
     this.favorites.unshift(song);
-    this.udapteFavorites().subscribe(() => {
+    this.udapteFavorites(username).subscribe(() => {
       Toast.show({ 
         text: 'Canción agregada a favoritos', 
         position: "center" 
@@ -51,18 +43,22 @@ export class FavoritesService {
     });
   }
 
-  removeFavorite(id: string) {
+  removeFavorite(username: string, id: string) {
     const index = this.favorites.findIndex(song => song.id === id);
 
     if (index !== -1) {
       this.favorites.splice(index, 1);
-      this.udapteFavorites().subscribe(() => {
+      this.udapteFavorites(username).subscribe(() => {
         Toast.show({ 
           text: 'Canción eliminada de favoritos', 
           position: "center"
         });
       });
     }
+  }
+
+  set favoriteSongs(songs: Song[]) {
+    this.favorites = songs;
   }
 
   get favoriteSongs() {

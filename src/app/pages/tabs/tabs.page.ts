@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService, MessengerService, PlayerService } from '../../services';
+import { environment } from '../../../environments/environment';
+const MESSAGES = environment.MESSAGES;
 
 @Component({
   selector: 'app-tabs',
@@ -18,12 +20,11 @@ export class TabsPage {
     this.playerSrv.setCurrentTab(event.tab);
   }
 
-
   async signOut() {
     const alert = await this.messengerSrv.showMessage(
-      'Cerrar sesión', 
-      '¿Estás seguro de cerrar sesión?', 
-      ['Cancelar', 'Aceptar']
+      MESSAGES.SIGN_OUT_TITLE, 
+      MESSAGES.SIGN_OUT_MESSAGE, 
+      [MESSAGES.CANCEL_BUTTON, MESSAGES.ACCEPT_BUTTON]
     );
 
     await alert.present();

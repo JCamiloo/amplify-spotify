@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
+import { Song } from '../../../../interfaces';
+import { environment } from '../../../../../environments/environment';
 const { Toast } = Plugins;
+const MESSAGES = environment.MESSAGES;
 
 @Component({
   selector: 'app-album-songs',
@@ -10,8 +13,8 @@ const { Toast } = Plugins;
 })
 export class AlbumSongsComponent implements OnInit {
 
-  songs: any[] = [];
-  title: any[] = [];
+  songs: Song[] = [];
+  title: string;
 
   constructor(
     private navParams: NavParams, 
@@ -27,7 +30,7 @@ export class AlbumSongsComponent implements OnInit {
     if (song && song.preview_url) {
       await this.modalCtlr.dismiss(song);
     } else {
-      await Toast.show({ text: 'Canción no disponible', position: "center" });
+      await Toast.show({ text: MESSAGES.SONG_NOT_AVAILABLE, position: "center" });
     }
   }
 

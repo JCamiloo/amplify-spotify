@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Plugins } from '@capacitor/core';
 import { Song } from '../../interfaces';
+import { environment } from '../../../environments/environment';
+const MESSAGES = environment.MESSAGES;
 const { Toast } = Plugins;
 
 @Injectable({
@@ -37,7 +38,7 @@ export class FavoritesService {
     this.favorites.unshift(song);
     this.udapteFavorites(username).subscribe(() => {
       Toast.show({ 
-        text: 'Canción agregada a favoritos', 
+        text: MESSAGES.FAVORITE_SONG_ADDED, 
         position: "center" 
       });
     });
@@ -50,7 +51,7 @@ export class FavoritesService {
       this.favorites.splice(index, 1);
       this.udapteFavorites(username).subscribe(() => {
         Toast.show({ 
-          text: 'Canción eliminada de favoritos', 
+          text: MESSAGES.FAVORITE_SONG_REMOVED, 
           position: "center"
         });
       });

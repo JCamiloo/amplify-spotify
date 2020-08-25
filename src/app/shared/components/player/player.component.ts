@@ -3,6 +3,7 @@ import { FavoritesService, PlayerService, AuthService } from '../../../services'
 import { Song, User } from '../../../interfaces';
 import { Subscription } from 'rxjs';
 import { Plugins } from '@capacitor/core';
+import { environment } from '../../../../environments/environment';
 const { Toast } = Plugins;
 
 @Component({
@@ -23,6 +24,8 @@ export class PlayerComponent implements OnInit, OnChanges {
     name: '',
     favorite: false
   };
+
+  MESSAGES = environment.MESSAGES;
 
   constructor(
     private favoritesSrv: FavoritesService,
@@ -68,7 +71,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.song.favorite = true;
       this.favoritesSrv.addFavorite(this.user.sub, song);
     } else {
-      Toast.show({ text: 'Debes seleccionar una canción', position: "center" });
+      Toast.show({ text: this.MESSAGES.PLAYER_MESSAGE, position: "center" });
     }
   }
 
@@ -100,7 +103,7 @@ export class PlayerComponent implements OnInit, OnChanges {
           this.currentSong.play();
           this.song.playing = true;
         } else {
-          Toast.show({ text: 'Debes seleccionar una canción', position: "center"});
+          Toast.show({ text: this.MESSAGES.PLAYER_MESSAGE, position: "center"});
         }
     }
   }

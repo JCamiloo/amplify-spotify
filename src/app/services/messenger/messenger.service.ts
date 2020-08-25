@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { environment } from '../../../environments/environment';
+const MESSAGES = environment.MESSAGES;
 
 @Injectable({
   providedIn: 'root'
@@ -47,13 +49,13 @@ export class MessengerService {
   private getMessage(content: string) {
     switch (content) {
       case 'NotAuthorizedException':
-        return 'Usuario o contraseña incorrectos';
+        return MESSAGES.NOT_AUTHORIZED_EXCEPTION;
       case 'UserNotFoundException':
-        return 'El usuario no existe';
+        return MESSAGES.USER_NOT_FOUND_EXCEPTION;
       case 'UsernameExistsException':
-        return 'El correo ya está en uso';
+        return MESSAGES.USERNAME_EXISTS_EXCEPTION;
       case 'CodeMismatchException':
-        return 'Código incorrecto. Revisa tu correo e inicia sesión'
+        return MESSAGES.CODE_MISMATCH_EXCEPTION;
       default:
         return content;
     }

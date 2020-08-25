@@ -6,6 +6,8 @@ import { MessengerService } from '../messenger/messenger.service'
 import { BehaviorSubject } from 'rxjs';
 import { Plugins } from '@capacitor/core';
 import { User } from '../../interfaces';
+import { environment } from '../../../environments/environment';
+const MESSAGES = environment.MESSAGES;
 const { Storage } = Plugins;
 
 @Injectable({
@@ -65,17 +67,17 @@ export class AuthService {
   async submitCode(username: string) {
     const alert = await this.alertCtrl.create({
       cssClass: 'messenger',
-      header: '¡Casi listo!',
-      message: 'Revisa tu correo e ingresa el código de verificación',
+      header: MESSAGES.SUBMIT_CODE_TITLE,
+      message: MESSAGES.SUBMIT_CODE_MESSAGE,
       inputs: [
         {
           name: 'code',
           type: 'text',
-          placeholder: 'Código'
+          placeholder: MESSAGES.SUBMIT_CODE_PLACEHOLDER
         }
       ],
       buttons: [{
-        text: 'Aceptar',
+        text: MESSAGES.ACCEPT_BUTTON,
         handler: (alertData) => {
           return { values: alertData.code };
         }
@@ -95,9 +97,15 @@ export class AuthService {
 
   validateCodeStatus(status: boolean) {
     if (status) {
-      this.messengerSrv.showMessage('¡Todo listo!', 'Cuenta confirmada, ya puedes iniciar sesión');
+      this.messengerSrv.showMessage(
+        MESSAGES.CODE_CONFIRMED_TITLE,
+        MESSAGES.CODE_CONFIRMED_MESSAGE
+      );
     } else {
-      this.messengerSrv.showMessage('Algo ocurrió', 'El código es incorrecto');
+      this.messengerSrv.showMessage(
+        MESSAGES.ERROR_MESSAGE_TITLE,
+        MESSAGES.CODE_MISMATCH_MESSAGE
+      );
     }
   }
 

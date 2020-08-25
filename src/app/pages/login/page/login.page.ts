@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { IonSlides, NavController } from '@ionic/angular';
 import { FormGroup } from '@angular/forms';
 import { AuthService, MessengerService } from '../../../services';
+import { environment } from '../../../../environments/environment';
+const MESSAGES = environment.MESSAGES;
 
 @Component({
   selector: 'app-login',
@@ -31,7 +33,7 @@ export class LoginPage {
       loginForm.reset();
       this.loginLoading = false;
       const error = e.message.replace('error ', '');
-      const alert = await this.messengerSrv.showMessage('Algo sucedió', error);
+      const alert = await this.messengerSrv.showMessage(MESSAGES.ERROR_MESSAGE_TITLE, error);
       alert.present();
     }
   }
@@ -47,7 +49,7 @@ export class LoginPage {
       this.signUpLoading = false;
       signUpForm.reset();
       const error = e.message.replace('error ', '');
-      const alert = await this.messengerSrv.showMessage('Algo sucedió', error);
+      const alert = await this.messengerSrv.showMessage(MESSAGES.ERROR_MESSAGE_TITLE, error);
       alert.present();
     }
   }
